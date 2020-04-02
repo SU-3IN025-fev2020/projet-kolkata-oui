@@ -1,4 +1,4 @@
-﻿# projet-ia-jeux2020 TEST TEST TEST
+﻿# projet-ia-jeux2020 TEST TEST
 
 Ce répertoire contient la description et le squelette du projet de l'UE AI et Jeux.
 
