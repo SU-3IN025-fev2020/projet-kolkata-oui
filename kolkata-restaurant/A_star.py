@@ -1,29 +1,39 @@
+from PriorityQueue import *
 
-class A_star:
+class a_star:
 
-    # froniter = PriorityQueue()
 
-    def __init__(self, graph, start, goal, wall):
-        self.graph = graph # terrain
+    frontiere = PriorityQueue()
+    came_from = {}
+    cost_so_far = {}
+    came_from[start] = None
+    cost_so_far[start] = 0
+
+    def __init__(self, start, goal, wall, nbLignes, nbColonnes):
+        # self.board = board # terrain
         self.start = start # point de depart
         self.goal = goal   # point d'arrivé
         self.wall = wall   # obstacles
+        self.nbLignes = nbLignes        # nbLignes du terrain
+        self.nbColonnes = nbColonnes    # nbColonnes du terrain
+
+    def reset():
+        a_star.frontiere.clear()
+        a_star.came_from.clear()
+        a_star.cost_so_far.clear()
 
     def heuristique(a,b):
         (x1,y1) = a
         (x2,y2) = b
         return abs(x1 - x2) + abs (y1 - y2)
 
-    def a_star_search(graph, start, goal, wall):
-        froniter = PriorityQueue()
-        frontier.put(start, 0)
-        came_from = {}
-        cost_so_far = {}
-        came_from[start] = None
-        cost_so_far[start] = 0
 
-        while not frontier.empty():
-            current = frontier.get()
+    def a_star_search(self):
+
+        a_star.frontiere.put(a_star.start, 0)
+
+        while not frontiere.empty():
+            current = frontiere.get()
 
             if current == goal:
                 break
@@ -35,12 +45,16 @@ class A_star:
             ouest = (x-1,y)
             neighbors = [nord, sud, est, ouest]
 
-            for (a,b) in neighbors:
-                new_cost = cost_so_far[current] + heuristique(current, next)
-                if next not in cost_so_far or new_cost < cost_so_far[next]:
-                    cost_so_far[next] = new_cost
-                    priority = new_cost + heuristique(goal, next)
-                    frontier.put(next, priority)
-                    came_from[next] = current
+            for next in neighbors:
+                if next[0] < nbLignes and next[1] < nbColonnes and next[0] >= 0 and next[1] >= 0 and next not in wall:    # si nous sommes toujours dans le terrain et hors obstacles
+                    new_cost = cost_so_far[current] + 1     # chanque deplacement à un cout de 1
+                    if next not in cost_so_far or new_cost < cost_so_far[next]: # si nous ne sommes pas deja allé sur la case, et qu'il n'y a pas de chemins de couts inferieur
+                        cost_so_far[next] = new_cost
+                        priority = new_cost + heuristique(goal, next)   # on voit si on se rapproche
+                        frontiere.put(next, priority)    # on étend la frontiere
+                        came_from[next] = current
+        return came_from, cost_so_far   # le chemin et le cout
 
-    return came_from, cost_so_far
+def path(start, goal, nbLignes, nbColonnes, wall):
+    # a_star.reset()
+    return a_star(start, goal, wall, nbLignes, nbColonnes).a_star_search()
