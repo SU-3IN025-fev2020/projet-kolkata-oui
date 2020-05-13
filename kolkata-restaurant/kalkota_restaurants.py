@@ -114,56 +114,21 @@ def main():
     # Boucle principale de déplacements
     #-------------------------------
 
-    from a_star import path
-
-    for i in range(iterations):
-        k=0
-        for j in range(nbPlayers):
-            playerpos = posPlayers[j]
-            path = path(playerpos, random.choice(goalStates), wallStates, nbLignes, nbColonnes)
-            playerpos = path[k]
-            k = k+1
-            if (playerpos not in wallStates) and playerpos[0]>=0 and playerpos[0]<=19 and playerpos[1]>=0 and playerpos[1]<=19:
-                players[j].set_rowcol(playerpos)
-                print ("pos :", j, playerpos[0],playerpos[1])
-                game.mainiteration()
-
-                posPlayers[j]=playerpos
-            if (row,col) == restau[j]:
-                #o = players[j].ramasse(game.layers)
-                game.mainiteration()
-                print ("Le joueur ", j, " est à son restaurant.")
-               # goalStates.remove((row,col)) # on enlève ce goalState de la liste
-
-
-                break
-
-
-    # # bon ici on fait juste plusieurs random walker pour exemple...
+    # from a_star import path
     #
     # for i in range(iterations):
-    #
-    #     for j in range(nbPlayers): # on fait bouger chaque joueur séquentiellement
-    #         row,col = posPlayers[j]
-    #
-    #
-    #         x_inc,y_inc = random.choice([(0,1),(0,-1),(1,0),(-1,0)])
-    #         next_row = row+x_inc
-    #         next_col = col+y_inc
-    #         # and ((next_row,next_col) not in posPlayers)
-    #         if ((next_row,next_col) not in wallStates) and next_row>=0 and next_row<=19 and next_col>=0 and next_col<=19:
-    #             players[j].set_rowcol(next_row,next_col)
-    #             print ("pos :", j, next_row,next_col)
+    #     k=0
+    #     for j in range(nbPlayers):
+    #         playerpos = posPlayers[j]
+    #         path = path(playerpos, random.choice(goalStates), wallStates, nbLignes, nbColonnes)
+    #         playerpos = path[k]
+    #         k = k+1
+    #         if (playerpos not in wallStates) and playerpos[0]>=0 and playerpos[0]<=19 and playerpos[1]>=0 and playerpos[1]<=19:
+    #             players[j].set_rowcol(playerpos)
+    #             print ("pos :", j, playerpos[0],playerpos[1])
     #             game.mainiteration()
     #
-    #             col=next_col
-    #             row=next_row
-    #             posPlayers[j]=(row,col)
-    #
-    #
-    #
-    #
-    #         # si on est à l'emplacement d'un restaurant, on s'arrête
+    #             posPlayers[j]=playerpos
     #         if (row,col) == restau[j]:
     #             #o = players[j].ramasse(game.layers)
     #             game.mainiteration()
@@ -172,6 +137,40 @@ def main():
     #
     #
     #             break
+
+
+    # bon ici on fait juste plusieurs random walker pour exemple...
+
+    for i in range(iterations):
+
+        for j in range(nbPlayers): # on fait bouger chaque joueur séquentiellement
+            row,col = posPlayers[j]
+
+            x_inc,y_inc = random.choice([(0,1),(0,-1),(1,0),(-1,0)])
+            next_row = row+x_inc
+            next_col = col+y_inc
+            # and ((next_row,next_col) not in posPlayers)
+            if ((next_row,next_col) not in wallStates) and next_row>=0 and next_row<=19 and next_col>=0 and next_col<=19:
+                players[j].set_rowcol(next_row,next_col)
+                print ("pos :", j, next_row,next_col)
+                game.mainiteration()
+
+                col=next_col
+                row=next_row
+                posPlayers[j]=(row,col)
+
+
+
+
+            # si on est à l'emplacement d'un restaurant, on s'arrête
+            if (row,col) == restau[j]:
+                #o = players[j].ramasse(game.layers)
+                game.mainiteration()
+                print ("Le joueur ", j, " est à son restaurant.")
+               # goalStates.remove((row,col)) # on enlève ce goalState de la liste
+
+
+                break
 
 
     pygame.quit()
